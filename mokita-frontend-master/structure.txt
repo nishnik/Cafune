@@ -1,0 +1,42 @@
+Main page
+ - Sign up
+ - Log in
+
+Main page: Signed in
+ - Create Track
+ - Tracks list
+  - Pending for verification
+  - Verified
+ - Generate CV
+
+
+ - Profile
+ - Log Out
+
+ Sign Up page
+  - Username (exist or not)
+  - Name
+  - Type
+   - Organization
+   - Individual
+ - Email
+ - Password (Strong)
+
+Log in page
+ - Username
+ - Password
+
+Create track
+ - Non editable identity field
+ - Choose organization
+ - Job title
+ - Description
+ - Track ID (generate random) (hash)
+ Submit
+
+Notification
+ Types:
+  1. Authorize it (create a modal)
+    - Accept or Reject
+    - Remarks
+

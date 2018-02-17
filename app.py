@@ -114,6 +114,10 @@ for id_ in users_name:
         users_id[name] = []
         users_id[name].append(id_)
 
+list_users = []
+for id_ in users_name:
+    list_users.append(users_name[id_] + " - " + id_)
+
 import numpy as np
 songs_vec = np.array(songs_vec)
 
@@ -150,13 +154,21 @@ def top_N_sim_users(user_id, N = 5):
 print ("READY")
 @app.route('/')
 def homepage():
-    return str(top_N_sim_users(users_id['Kumar Srinivas'][0], 5))
+    data = {}
+    data['list_users'] = list_users
+    return render_template("main.html", **data)
 
 
-@app.route('/user', methods=['POST', 'GET'])
+@app.route('/user', methods=['GET', 'POST'])
 def user():
-	user_id = request.form['user_id']
-	return str(top_N_sim_users(user_id, 5))
+    user_id = request.form['user_id']
+    user_id = user_id.split("-")[1][1:]
+    print (user_id)
+    results = top_N_sim_users(user_id, 5)
+    data = {}
+    data['results'] = results
+    print (results)
+    return str(results)
     # return str(top_N_sim_users(users_id['Kumar Srinivas'][0], 5))
 
 if __name__ == '__main__':
