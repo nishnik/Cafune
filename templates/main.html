@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Login V1</title>
+	<title>Cafune</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->
@@ -23,6 +23,28 @@
 </head>
 <body>
 
+
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div>
+        <div class="modal-body">
+          <p>Some text in the modal.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100">
@@ -32,7 +54,7 @@
 
 				<form id="loginform" class="login100-form validate-form" onsubmit="event.preventDefault(); login(loginform);">
 					<span class="login100-form-title">
-						Welcome to Mokita
+						Cafune
 					</span>
 
 					<div class="wrap-input100" id="divshown">
@@ -53,6 +75,7 @@
 						<button class="login100-form-btn" type="submit">
 							Search similar users
 						</button>
+						
 					</div>
 					<div class="text-center p-t-136">
 						<a style="cursor: pointer;" class="txt2" onclick='toggleView()'>
@@ -64,7 +87,7 @@
 
 				<form id="signupform" class="login100-form validate-form" onsubmit="event.preventDefault(); signup(signupform);">
 					<span class="login100-form-title">
-						Song Recommendation
+						Cafune
 					</span>
 
 
@@ -130,29 +153,71 @@
 
 			data.append('user_id', username)
 			// data.append('password', password)
-			var url = 'https://desolate-anchorage-45109.herokuapp.com//user'
-
+			var url = 'https://desolate-anchorage-45109.herokuapp.com/user'
+			// var url = 'http://localhost:5000/user'
 			var request = new XMLHttpRequest()
 			request.open("POST", url , true)
 			request.onload = function () {
     // do something to response
-    alert(this.responseText);
+    
+    // alert(this.responseText);
+    
+    console.log (this.responseText);
+      results = eval(this.responseText);
+      // results = results['results'];
+
+      html_1 = '<div class="modal-content">        <div class="modal-header">          <button type="button" class="close" data-dismiss="modal">&times;</button>' + 
+          '<h4 class="modal-title">' + 'Similar users' + '</h4>        </div>        <div class="modal-body">          ';
+
+html_1 += '<table style="width:100%">  <tr>    <th><center>Name</center></th>    <th><center>Similarity Score</center></th>     </tr>';
+tmp = results[0][2]
+          for (i=0;i<results.length;i++)
+          	html_1 += '  <tr>    <td><center><a href="https://www.facebook.com/'+results[i][1]+'">' + results[i][0] + '</a> </td></center><td> <center>'+ Math.round((results[i][2]*100)/tmp) +'</center></td></tr>'
+
+
+          html_1 += '</table>        </div>        <div class="modal-footer">          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>        </div>      </div>';
+		$("#myModal .modal-dialog").html(html_1);
+          $('#myModal').modal('show'); 
+
 };
 			request.send(data)
 		}
 
 		var signup = function(form) {
+			console.log("yaha");
 			var data = new FormData()
 			var username = $('input[name=songid]').val()
 			
-			data.append('username', username)
-			
-			var url = 'http://localhost:8081/signup'
-
+			data.append('song_id', username)
+			// data.append('password', password)
+			// var url = 'https://desolate-anchorage-45109.herokuapp.com/song'
+			var url = 'http://localhost:5000/song'
+			console.log("yaha2");
 			var request = new XMLHttpRequest()
 			request.open("POST", url , true)
-			request.send(data)
+			request.onload = function () {
+    // do something to response
+    
+    // alert(this.responseText);
+    
+    console.log (this.responseText);
+      results = eval(this.responseText);
+      // results = results['results'];
+
+      html_1 = '<div class="modal-content">        <div class="modal-header">          <button type="button" class="close" data-dismiss="modal">&times;</button>' + 
+          '<h4 class="modal-title">' + 'Similar songs' + '</h4>        </div>        <div class="modal-body">          ';
+
+html_1 += '<table style="width:100%">  <tr>    <th><center>Name</center></th>    <th><center>Similarity Score</center></th>     </tr>';
+tmp = results[0][2]
+          for (i=0;i<results.length;i++)
+          	html_1 += '  <tr>    <td><center><a href="https://www.facebook.com/'+results[i][1]+'">' + results[i][0] + '</a> </td></center><td> <center>'+ Math.round((results[i][2]*100)/tmp) +'</center></td></tr>'
+
+
+          html_1 += '</table>        </div>        <div class="modal-footer">          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>        </div>      </div>';
+		$("#myModal .modal-dialog").html(html_1);
+          $('#myModal').modal('show');
 		}
+	}
 
 
 

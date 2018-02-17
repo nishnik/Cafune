@@ -130,7 +130,7 @@ def top_N_sim_songs(song_id, N = 5):
     returned_list = []
     count = 0
     for w in sorted(sim_songs, key=sim_songs.get, reverse=True):
-        returned_list.append([songs_name[w], sim_songs[w]])
+        returned_list.append([songs_name[w], w, sim_songs[w]])
         count += 1
         if (count == N+1):
             break
@@ -151,6 +151,7 @@ def top_N_sim_users(user_id, N = 5):
             break
     return returned_list
 
+import json
 print ("READY")
 @app.route('/')
 def homepage():
@@ -164,12 +165,36 @@ def user():
     user_id = request.form['user_id']
     user_id = user_id.split("-")[1][1:]
     print (user_id)
-    results = top_N_sim_users(user_id, 5)
-    data = {}
-    data['results'] = results
+    N = 5
+    results = top_N_sim_users(user_id, N)
+    # print (results)
+    # for i in range(len(results)):
+    #     if (not i == 0):
+    #         results[i][2] = float(results[i][2])/results[0][2]
+    # print (results)
+    # tmp = results[0][2]
+    # for i in range(len(results)):
+    #     tmp2 = results[i][0]
+    #     results[i][2] = (tmp2 * 100)/tmp
+    return str(results)
+    # return str(top_N_sim_users(users_id['Kumar Srinivas'][0], 5))
+
+
+@app.route('/song', methods=['GET', 'POST'])
+def song():
+    song_id = request.form['song_id']
+    # song_id = user_id.split("-")[1][1:]
+    # print (user_id)
+    N = 5
+    results = top_N_sim_songs(song_id, N)
+    # print (results)
+    # for i in range(len(results)):
+    #     if (not i == 0):
+    #         results[i][2] = float(results[i][2])/results[0][2]
     print (results)
     return str(results)
     # return str(top_N_sim_users(users_id['Kumar Srinivas'][0], 5))
+
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=True)
