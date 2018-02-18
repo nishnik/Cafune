@@ -89,11 +89,11 @@ def dot(K, L):
       return 0
    return sum(i[0] * i[1] for i in zip(K, L))
 
-from scipy import spatial
-def dot_div(K, L):
-   if len(K) != len(L):
-      return 0
-   return 1 - spatial.distance.cosine(K, L)
+# from scipy import spatial
+# def dot_div(K, L):
+#    if len(K) != len(L):
+#       return 0
+#    return 1 - spatial.distance.cosine(K, L)
 
 songs_id = {}
 for id_ in songs_name:
