@@ -89,11 +89,11 @@ def dot(K, L):
       return 0
    return sum(i[0] * i[1] for i in zip(K, L))
 
-# from scipy import spatial
-# def dot(K, L):
-#    if len(K) != len(L):
-#       return 0
-#    return 1 - spatial.distance.cosine(K, L)
+from scipy import spatial
+def dot_div(K, L):
+   if len(K) != len(L):
+      return 0
+   return 1 - spatial.distance.cosine(K, L)
 
 songs_id = {}
 for id_ in songs_name:
@@ -117,6 +117,11 @@ for id_ in users_name:
 list_users = []
 for id_ in users_name:
     list_users.append(users_name[id_] + " - " + id_)
+
+list_songs = []
+for id_ in songs_name:
+    list_songs.append(songs_name[id_] + " : " + id_)
+
 
 import numpy as np
 songs_vec = np.array(songs_vec)
@@ -151,12 +156,16 @@ def top_N_sim_users(user_id, N = 5):
             break
     return returned_list
 
+
+
 import json
 print ("READY")
 @app.route('/')
 def homepage():
     data = {}
     data['list_users'] = list_users
+    data['list_songs'] = list_songs
+    print(list_songs[0])
     return render_template("main.html", **data)
 
 
@@ -182,7 +191,9 @@ def user():
 
 @app.route('/song', methods=['GET', 'POST'])
 def song():
+    print ('here')
     song_id = request.form['song_id']
+    song_id = song_id.split(":")[-1][1:]
     # song_id = user_id.split("-")[1][1:]
     # print (user_id)
     N = 5
